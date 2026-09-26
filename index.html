@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun, Sayang! ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                        },
+                        cream: '#fffdfa',
+                    },
+                    fontFamily: {
+                        dancing: ['"Dancing Script"', 'cursive'],
+                        playfair: ['"Playfair Display"', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fce7f3 0%, #ffe4e6 50%, #fbcfe8 100%);
+            overflow-x: hidden;
+            color: #4a4a4a;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(225, 29, 72, 0.08);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Heart Animation Background */
+        .heart-bg {
+            position: fixed;
+            top: -10vh;
+            pointer-events: none;
+            z-index: 0;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Birthday Cake Styling */
+        .cake {
+            position: relative;
+            width: 180px;
+            height: 140px;
+            margin: 0 auto;
+        }
+
+        .plate {
+            width: 220px;
+            height: 14px;
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 0;
+            left: -20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .layer {
+            position: absolute;
+            width: 180px;
+            border-radius: 12px 12px 6px 6px;
+        }
+
+        .layer-bottom {
+            height: 50px;
+            bottom: 14px;
+            background: linear-gradient(to right, #f43f5e, #fb7185);
+        }
+
+        .layer-middle {
+            height: 45px;
+            bottom: 64px;
+            background: linear-gradient(to right, #fff, #fecdd3);
+        }
+
+        .layer-top {
+            height: 40px;
+            bottom: 109px;
+            background: linear-gradient(to right, #f43f5e, #f472b6);
+            border-radius: 14px 14px 6px 6px;
+        }
+
+        .icing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background-color: #ffffff;
+            border-radius: 10px 10px 0 0;
+        }
+
+        /* Candle & Flame */
+        .candle {
+            width: 12px;
+            height: 35px;
+            background: linear-gradient(to bottom, #fef08a, #fde047);
+            border-radius: 4px;
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .wick {
+            width: 2px;
+            height: 8px;
+            background-color: #475569;
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 16px;
+            height: 24px;
+            background: radial-gradient(ellipse at bottom, #facc15 0%, #f97316 60%, transparent 100%);
+            border-radius: 50% 50% 35% 35%;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.6s infinite alternate;
+            box-shadow: 0 0 15px #f97316;
+            cursor: pointer;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+            100% { transform: translateX(-50%) scale(1.15) rotate(2deg); opacity: 0.9; }
+        }
+
+        .flame.off {
+            display: none;
+        }
+
+        .smoke {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 20px;
+            background: rgba(200, 200, 200, 0.6);
+            border-radius: 10px;
+            filter: blur(3px);
+            animation: rise 1.5s forwards;
+            display: none;
+        }
+
+        @keyframes rise {
+            0% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -30px) scale(2.5); opacity: 0; }
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            background: #fda4af;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(225, 29, 72, 0.15);
+            transition: transform 0.4s ease;
+        }
+
+        .envelope:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 100px solid #f43f5e;
+            transform-origin: top;
+            transition: transform 0.4s ease;
+            z-index: 3;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid #fecdd3;
+            border-right: 140px solid #fecdd3;
+            border-bottom: 100px solid #fb7185;
+            border-radius: 0 0 8px 8px;
+            z-index: 2;
+        }
+
+        .envelope-letter {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 250px;
+            height: 140px;
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            z-index: 1;
+            transition: transform 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ffe4e6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fb7185;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative pb-16">
+
+    <div id="heart-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <div class="fixed top-5 right-5 z-50">
+        <button id="music-toggle" class="glass-card px-4 py-2.5 rounded-full flex items-center space-x-3 text-rose-700 font-medium shadow-lg hover:scale-105 transition-all duration-300">
+            <span id="music-icon-container" class="w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md">
+                <i id="music-icon" class="fas fa-music animate-spin" style="animation-duration: 4s;"></i>
+            </span>
+            <span id="music-text" class="text-sm font-poppins hidden sm:inline">Putar Musik</span>
+        </button>
+        <!-- Romantic Background Audio Source -->
+        <audio id="bg-music" loop>
+            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112188.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-4xl mx-auto px-4 pt-12 relative z-10 space-y-16">
+
+        <section class="text-center pt-6">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden animate-float">
+                <!-- Decorative Hearts -->
+                <i class="fas fa-heart text-rose-300 text-3xl absolute top-6 left-6 opacity-60"></i>
+                <i class="fas fa-heart text-rose-400 text-2xl absolute bottom-6 right-8 opacity-60"></i>
+                <i class="fas fa-sparkles text-amber-300 text-2xl absolute top-10 right-10 opacity-70"></i>
+
+                <span class="inline-block px-4 py-1.5 bg-rose-100 text-rose-600 rounded-full text-xs sm:text-sm font-semibold tracking-wider uppercase mb-4 shadow-sm">
+                    ✨ Special Day for Someone Special ✨
+                </span>
+
+                <h1 class="font-dancing text-4xl sm:text-6xl md:text-7xl font-bold text-rose-600 mb-4 drop-shadow-sm">
+                    Selamat Ulang Tahun, Sayang! ❤️
+                </h1>
+
+                <p class="font-playfair italic text-gray-700 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
+                    "Hari ini adalah hari favoritku dalam setahun, karena hari ini adalah hari di mana sosok tersayang dalam hidupku dilahirkan."
+                </p>
+
+                <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                    <a href="#cake-section" class="bg-gradient-to-r from-rose-500 to-pink-500 text-white font-medium px-6 py-3 rounded-full shadow-lg hover:shadow-rose-300/50 hover:scale-105 transition duration-300 flex items-center gap-2">
+                        <i class="fas fa-birthday-cake"></i> Tiup Lilin
+                    </a>
+                    <a href="#letter-section" class="bg-white text-rose-600 border border-rose-200 font-medium px-6 py-3 rounded-full shadow-md hover:bg-rose-50 hover:scale-105 transition duration-300 flex items-center gap-2">
+                        <i class="fas fa-envelope-open-text"></i> Buka Surat
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-2xl p-6 sm:p-8 text-center">
+            <h2 class="font-playfair text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                Menghitung Setiap Momen Indah ✨
+            </h2>
+            <p class="text-gray-600 text-sm mb-6">Waktu yang telah kita lalui bersama penuh kenangan manis</p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-white/80 p-4 rounded-xl border border-rose-100 shadow-sm">
+                    <span id="days-count" class="block font-bold text-3xl sm:text-4xl text-rose-500">365</span>
+                    <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Hari Bersama</span>
+                </div>
+                <div class="bg-white/80 p-4 rounded-xl border border-rose-100 shadow-sm">
+                    <span id="hours-count" class="block font-bold text-3xl sm:text-4xl text-rose-500">8,760</span>
+                    <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Jam Penuh Senyum</span>
+                </div>
+                <div class="bg-white/80 p-4 rounded-xl border border-rose-100 shadow-sm">
+                    <span class="block font-bold text-3xl sm:text-4xl text-rose-500">∞</span>
+                    <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Cinta & Sayang</span>
+                </div>
+                <div class="bg-white/80 p-4 rounded-xl border border-rose-100 shadow-sm">
+                    <span class="block font-bold text-3xl sm:text-4xl text-rose-500">100%</span>
+                    <span class="text-xs text-gray-500 font-medium uppercase tracking-wider">Kebahagiaan</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="cake-section" class="glass-card rounded-3xl p-8 text-center relative">
+            <h2 class="font-dancing text-4xl sm:text-5xl font-bold text-rose-600 mb-2">
+                Make a Wish! 🎂
+            </h2>
+            <p class="text-gray-600 mb-8 text-sm sm:text-base">
+                Klik lilin di bawah untuk meniup dan membuat permintaan spesialmu!
+            </p>
+
+            <!-- Cake Container -->
+            <div class="py-10 my-4 flex justify-center items-center">
+                <div class="cake">
+                    <div class="plate"></div>
+                    <div class="layer layer-bottom"></div>
+                    <div class="layer layer-middle"></div>
+                    <div class="layer layer-top">
+                        <div class="icing"></div>
+                    </div>
+                    <!-- Candle -->
+                    <div class="candle">
+                        <div class="wick"></div>
+                        <div id="flame" class="flame" onclick="blowCandle()" title="Klik untuk meniup lilin!"></div>
+                        <div id="smoke" class="smoke"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wish Message Output -->
+            <div id="wish-message" class="hidden transition-all duration-500 ease-out">
+                <div class="inline-block bg-rose-50 border border-rose-200 text-rose-700 px-6 py-4 rounded-2xl shadow-sm max-w-md">
+                    <p class="font-dancing text-2xl font-bold mb-1">Semoga Semua Impianmu Terwujud! 🎉</p>
+                    <p class="text-sm text-gray-600">Aku selalu ada di sini untuk mendukungmu dan melangkah bersama. I love you!</p>
+                </div>
+            </div>
+
+            <button id="blow-btn" onclick="blowCandle()" class="mt-6 bg-rose-500 hover:bg-rose-600 text-white px-6 py-2.5 rounded-full text-sm font-medium shadow-md transition duration-300">
+                <i class="fas fa-wind mr-1"></i> Tiup Lilin
+            </button>
+        </section>
+
+        <section class="space-y-6">
+            <div class="text-center">
+                <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-gray-800">
+                    Galeri Kenangan Manis 📸
+                </h2>
+                <p class="text-gray-600 text-sm mt-1">Setiap detik bersamamu adalah cerita indah</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Memory Card 1 -->
+                <div class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition duration-300 group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="D3E2263E-CD40-446C-A49B-25672947AF59.jpeg" alt="Momen Pertama Bertemu" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <span class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-rose-600">
+                            Awal Kunjungan
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-xs text-rose-400 font-semibold mb-1">Momen Pertama</p>
+                        <h3 class="font-playfair font-bold text-lg text-gray-800 mb-2">Saat Pertama Bertemu</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Senyuman pertamamu hari itu masih tersimpan rapi dan menjadi alasan aku falling in love sampai sekarang.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Memory Card 2 -->
+                <div class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition duration-300 group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="62ac7bf6-6a13-404c-99c7-b7c42c8737f0.jpeg" alt="Jalan-jalan Bersama" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <span class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-rose-600">
+                            Petualangan
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-xs text-rose-400 font-semibold mb-1">Jalan Bersama</p>
+                        <h3 class="font-playfair font-bold text-lg text-gray-800 mb-2">Kencan Favorit</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Menghabiskan waktu seharian tanpa khawatir waktu berjalan. Hanya ada tawa dan percakapan manis kita.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Memory Card 3 -->
+                <div class="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition duration-300 group">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="62ac7bf6-6a13-404c-99c7-b7c42c8737f0.jpeg" alt="Bahagia Bersama" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <span class="absolute bottom-3 left-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-rose-600">
+                            Masa Depan
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <p class="text-xs text-rose-400 font-semibold mb-1">Hari Ini & Nanti</p>
+                        <h3 class="font-playfair font-bold text-lg text-gray-800 mb-2">Tumbuh Bersama</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Terima kasih sudah bertahan, tumbuh bersama, dan saling melengkapi di setiap situasi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="letter-section" class="glass-card rounded-3xl p-8 text-center flex flex-col items-center justify-center">
+            <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-gray-800 mb-2">
+                Surat Rahasia Untukmu ✉️
+            </h2>
+            <p class="text-gray-600 text-sm mb-8">Klik amplop di bawah ini untuk membuka pesan khusus dari hatiku</p>
+
+            <!-- Envelope Wrapper -->
+            <div class="envelope-wrapper my-4" onclick="openLetterModal()">
+                <div class="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-pocket"></div>
+                    <div class="envelope-letter">
+                        <i class="fas fa-heart text-rose-500 text-2xl mb-1"></i>
+                        <span class="font-dancing text-xl font-bold text-rose-600">Klik Untuk Membaca</span>
+                        <span class="text-xs text-gray-400">Spesial Hari Ulang Tahun</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="letter-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full relative transform scale-95 transition-transform duration-300 shadow-2xl border-2 border-rose-100 max-h-[85vh] overflow-y-auto">
+            <!-- Close Button -->
+            <button onclick="closeLetterModal()" class="absolute top-4 right-4 text-gray-400 hover:text-rose-500 w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Modal Content -->
+            <div class="text-center space-y-4">
+                <div class="w-12 h-12 bg-rose-100 text-rose-500 rounded-full flex items-center justify-center mx-auto text-xl">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+
+                <h3 class="font-dancing text-3xl font-bold text-rose-600">
+                    Untuk Kamu, Sayangku ❤️
+                </h3>
+
+                <div class="font-playfair text-gray-700 text-sm sm:text-base text-left leading-relaxed space-y-3 pt-2 italic">
+                    <p>Selamat ulang tahun yang luar biasa untuk seseorang yang membuat duniaku terasa jauh lebih hangat dan bahagia.</p>
+                    <p>Terima kasih telah hadir dalam hidupku, membawa tawa, ketenangan, dan cinta yang tulus. Kamu adalah kombinasi sempurna dari kebaikan, kecantikan, dan ketabahan.</p>
+                    <p>Di usiamu yang baru ini, aku mendoakan agar langkahmu selalu dimudahkan, semua impianmu tercapai, dan kebahagiaan senantiasa menyertaimu. Aku berharap bisa terus berada di sampingmu untuk merayakan setiap ulang tahunmu di masa depan.</p>
+                    <p class="text-right font-dancing text-2xl text-rose-600 font-bold not-italic pt-3">
+                        Dengan Seluruh Cintaku, <br>❤️
+                    </p>
+                </div>
+
+                <button onclick="closeLetterModal()" class="w-full bg-rose-500 text-white font-medium py-2.5 rounded-full hover:bg-rose-600 transition shadow-md mt-4">
+                    Tutup Surat & Peluk Me! 🤗
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center mt-12 text-gray-500 text-xs relative z-10">
+        <p>Dibuat dengan <i class="fas fa-heart text-rose-500"></i> khusus untukmu di hari ulang tahunmu.</p>
+    </footer>
+
+    <script>
+        /* Floating Hearts Creator */
+        function createHearts() {
+            const container = document.getElementById('heart-container');
+            const heartCount = 15;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('i');
+                heart.classList.add('fas', 'fa-heart', 'heart-bg', 'text-rose-300');
+                
+                // Random positioning and sizes
+                const size = Math.random() * 20 + 10;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 5 + 5;
+                const delay = Math.random() * 5;
+                
+                heart.style.left = `${left}vw`;
+                heart.style.fontSize = `${size}px`;
+                heart.style.animationDuration = `${duration}s`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                container.appendChild(heart);
+            }
+        }
+
+        /* Audio Control Switch */
+        const musicBtn = document.getElementById('music-toggle');
+        const bgMusic = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('fa-spin');
+                musicIcon.classList.replace('fa-pause', 'fa-music');
+                musicText.innerText = 'Putar Musik';
+            } else {
+                bgMusic.play().then(() => {
+                    musicIcon.classList.add('fa-spin');
+                    musicIcon.classList.replace('fa-music', 'fa-pause');
+                    musicText.innerText = 'Jeda Musik';
+                }).catch(err => {
+                    console.log('Audio playback standard restriction:', err);
+                });
+            }
+            isPlaying = !isPlaying;
+        });
+
+        /* Candle Blowing Logic & Confetti */
+        let isCandleOut = false;
+
+        function blowCandle() {
+            if (isCandleOut) return;
+
+            const flame = document.getElementById('flame');
+            const smoke = document.getElementById('smoke');
+            const wishMessage = document.getElementById('wish-message');
+            const blowBtn = document.getElementById('blow-btn');
+
+            flame.classList.add('off');
+            smoke.style.display = 'block';
+            isCandleOut = true;
+
+            // Show hidden wish message
+            wishMessage.classList.remove('hidden');
+            blowBtn.innerText = '✨ Permintaan Terkirim!';
+            blowBtn.disabled = true;
+            blowBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            // Trigger Confetti Party Explosion
+            triggerConfetti();
+        }
+
+        function triggerConfetti() {
+            const count = 200;
+            const defaults = {
+                origin: { y: 0.7 }
+            };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+            });
+            fire(0.2, {
+                spread: 60,
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                scalar: 1.2
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+        }
+
+        /* Modal Envelope Mechanics */
+        function openLetterModal() {
+            const modal = document.getElementById('letter-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+
+            // Small confetti boost when opening love letter
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function closeLetterModal() {
+            const modal = document.getElementById('letter-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+        }
+
+        /* On Page Load Actions */
+        window.onload = function() {
+            createHearts();
+        };
+    </script>
+</body>
+</html>
